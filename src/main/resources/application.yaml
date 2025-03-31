@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/Cinema
+    username: root
+    password: chuong0105
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+jwt:
+  secret: O0+0smU0SJvlAWX6nfR6HFezkxZbIjj85GT2GIIuCyY=
+
+file:
+  upload: F:/upload
+
+
