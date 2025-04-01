@@ -19,8 +19,5 @@ public class Room {
     private Location location;
 
     @OneToMany(mappedBy = "room")
-    private List<Schedule> schedules;
-
-    @OneToMany(mappedBy = "room")
     private List<Seat> seats;
 }

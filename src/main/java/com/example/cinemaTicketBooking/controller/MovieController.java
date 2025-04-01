@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/home")
-public class HomeController {
+@RequestMapping("/movie")
+public class MovieController {
     @Autowired
     private MovieService movieService;
 
     @GetMapping("/now-showing")
-    public ResponseEntity<?> nowShowing() {
-        List<MovieDTO> movieDTOS= movieService.findByDateBefore();
+    public ResponseEntity<?> nowShowing(@RequestParam int page, @RequestParam int size) {
+        List<MovieDTO> movieDTOS= movieService.findByDateBefore(page, size);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setData(movieDTOS);
         baseResponse.setMessage("Now showing");
@@ -30,8 +30,8 @@ public class HomeController {
     }
 
     @GetMapping("/upcoming")
-    public ResponseEntity<?> upcoming() {
-        List<MovieDTO> movieDTOS= movieService.findByDateAfter();
+    public ResponseEntity<?> upcoming(@RequestParam int page, @RequestParam int size) {
+        List<MovieDTO> movieDTOS= movieService.findByDateAfter(page, size);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setData(movieDTOS);
         baseResponse.setMessage("upcoming");

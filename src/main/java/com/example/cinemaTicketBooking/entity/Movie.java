@@ -36,4 +36,9 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private List<Review> reviews;
 
+    @OneToMany(mappedBy = "movie")
+    private List<TicketOrder> ticketOrders;
+
+
+
 }

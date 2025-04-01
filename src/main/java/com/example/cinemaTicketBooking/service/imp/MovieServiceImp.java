@@ -2,7 +2,11 @@ package com.example.cinemaTicketBooking.service.imp;
 
 import com.example.cinemaTicketBooking.dto.ImageDTO;
 import com.example.cinemaTicketBooking.dto.MovieDTO;
+import com.example.cinemaTicketBooking.dto.ReviewDTO;
+import com.example.cinemaTicketBooking.dto.TicketOrderDTO;
 import com.example.cinemaTicketBooking.entity.Image;
+import com.example.cinemaTicketBooking.entity.Review;
+import com.example.cinemaTicketBooking.entity.TicketOrder;
 import com.example.cinemaTicketBooking.repository.MovieRepository;
 import com.example.cinemaTicketBooking.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +25,9 @@ public class MovieServiceImp implements MovieService {
     private MovieRepository movieRepository;
 
     @Override
-    public List<MovieDTO> findByDateBefore() {
-        List<MovieDTO> movieDTOs = movieRepository.findByDateBefore(LocalDate.now()).stream().map(movie -> {
+    public List<MovieDTO> findByDateBefore(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<MovieDTO> movieDTOs = movieRepository.findByDateBefore(LocalDate.now(),pageable).stream().map(movie -> {
             MovieDTO movieDTO = new MovieDTO();
             movieDTO.setId(movie.getId());
             movieDTO.setTitle(movie.getTitle());
@@ -36,6 +41,26 @@ public class MovieServiceImp implements MovieService {
                 imageDTOs.add(imageDTO);
             }
             movieDTO.setImageDTOs(imageDTOs);
+            List<ReviewDTO> reviewDTOs = new ArrayList<>();
+            int total=0;
+            for (Review review : movie.getReviews()) {
+                total+=review.getRating();
+                ReviewDTO reviewDTO = new ReviewDTO();
+                reviewDTO.setId(review.getId());
+                reviewDTO.setRating(review.getRating());
+                reviewDTO.setDescription(review.getDescription());
+                reviewDTOs.add(reviewDTO);
+            }
+            movieDTO.setAvrRating(total/movie.getReviews().size());
+            movieDTO.setReviewDTOs(reviewDTOs);
+
+            List<TicketOrderDTO> ticketOrderDTOs = new ArrayList<>();
+            for(TicketOrder ticketOrder: movie.getTicketOrders()){
+                TicketOrderDTO ticketOrderDTO = new TicketOrderDTO();
+                ticketOrderDTO.setId(ticketOrder.getId());
+                ticketOrderDTOs.add(ticketOrderDTO);
+            }
+            movieDTO.setTicketOrderDTOs(ticketOrderDTOs);
 
             return movieDTO;
         }).toList();
@@ -44,8 +69,9 @@ public class MovieServiceImp implements MovieService {
     }
 
     @Override
-    public List<MovieDTO> findByDateAfter() {
-        List<MovieDTO> movieDTOs = movieRepository.findByDateAfter(LocalDate.now()).stream().map(movie -> {
+    public List<MovieDTO> findByDateAfter(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<MovieDTO> movieDTOs = movieRepository.findByDateAfter(LocalDate.now(),pageable).stream().map(movie -> {
             MovieDTO movieDTO = new MovieDTO();
             movieDTO.setId(movie.getId());
             movieDTO.setTitle(movie.getTitle());
@@ -59,6 +85,26 @@ public class MovieServiceImp implements MovieService {
                 imageDTOs.add(imageDTO);
             }
             movieDTO.setImageDTOs(imageDTOs);
+            List<ReviewDTO> reviewDTOs = new ArrayList<>();
+            int total=0;
+            for (Review review : movie.getReviews()) {
+                total+=review.getRating();
+                ReviewDTO reviewDTO = new ReviewDTO();
+                reviewDTO.setId(review.getId());
+                reviewDTO.setRating(review.getRating());
+                reviewDTO.setDescription(review.getDescription());
+                reviewDTOs.add(reviewDTO);
+            }
+            movieDTO.setAvrRating(total/movie.getReviews().size());
+            movieDTO.setReviewDTOs(reviewDTOs);
+
+            List<TicketOrderDTO> ticketOrderDTOs = new ArrayList<>();
+            for(TicketOrder ticketOrder: movie.getTicketOrders()){
+                TicketOrderDTO ticketOrderDTO = new TicketOrderDTO();
+                ticketOrderDTO.setId(ticketOrder.getId());
+                ticketOrderDTOs.add(ticketOrderDTO);
+            }
+            movieDTO.setTicketOrderDTOs(ticketOrderDTOs);
 
             return movieDTO;
         }).toList();
@@ -85,6 +131,26 @@ public class MovieServiceImp implements MovieService {
                 imageDTOs.add(imageDTO);
             }
             movieDTO.setImageDTOs(imageDTOs);
+            List<ReviewDTO> reviewDTOs = new ArrayList<>();
+            int total=0;
+            for (Review review : movie.getReviews()) {
+                total+=review.getRating();
+                ReviewDTO reviewDTO = new ReviewDTO();
+                reviewDTO.setId(review.getId());
+                reviewDTO.setRating(review.getRating());
+                reviewDTO.setDescription(review.getDescription());
+                reviewDTOs.add(reviewDTO);
+            }
+            movieDTO.setAvrRating(total/movie.getReviews().size());
+            movieDTO.setReviewDTOs(reviewDTOs);
+
+            List<TicketOrderDTO> ticketOrderDTOs = new ArrayList<>();
+            for(TicketOrder ticketOrder: movie.getTicketOrders()){
+                TicketOrderDTO ticketOrderDTO = new TicketOrderDTO();
+                ticketOrderDTO.setId(ticketOrder.getId());
+                ticketOrderDTOs.add(ticketOrderDTO);
+            }
+            movieDTO.setTicketOrderDTOs(ticketOrderDTOs);
 
             return movieDTO;
         }).toList();

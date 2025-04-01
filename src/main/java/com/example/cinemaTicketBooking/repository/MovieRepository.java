@@ -12,8 +12,8 @@ import java.util.List;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    List<Movie> findByDateBefore(LocalDate date);
-    List<Movie> findByDateAfter(LocalDate date);
+    List<Movie> findByDateBefore(LocalDate date,Pageable pageable);
+    List<Movie> findByDateAfter(LocalDate date,Pageable pageable);
 
     @Query("SELECT m FROM Movie m " +
             "JOIN Review r ON m.id = r.movie.id " +

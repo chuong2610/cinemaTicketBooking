@@ -19,11 +19,8 @@ public class Schedule {
     @JoinColumn(name = "movieId")
     private Movie movie;
 
-    @ManyToOne
-    @JoinColumn(name = "roomId")
-    private Room room;
 
-    @OneToMany(mappedBy = "schedule")
-    private List<TicketPrice>ticketPrices ;
+
+
 
 }

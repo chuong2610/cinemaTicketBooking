@@ -16,11 +16,9 @@ public class TicketPrice {
 
     private String seatType;
 
-    @ManyToOne
-    @JoinColumn(name = "scheduleId")
-    private Schedule schedule;
 
-    @OneToMany(mappedBy = "ticketPrice")
-    private List<TicketOrder> ticketOrders;
+
+    @OneToOne(mappedBy = "ticketPrice")
+    private TicketOrder ticketOrder;
 
 }
