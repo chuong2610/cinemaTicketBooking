@@ -27,6 +27,8 @@ public class MovieDTO {
 
     private List<String> genres;
 
+    private List<ActorDTO>actorDTOs;
+
 
 
 }

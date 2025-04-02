@@ -3,8 +3,8 @@ package com.example.cinemaTicketBooking.dto;
 import lombok.Data;
 
 @Data
-public class ActorDTO {
+public class CardDTO {
     private int id;
+    private int point;
     private String name;
-    private String description;
 }

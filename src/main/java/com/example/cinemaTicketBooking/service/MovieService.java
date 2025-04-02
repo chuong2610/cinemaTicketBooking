@@ -6,7 +6,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface MovieService {
-    public List<MovieDTO> findByDateBefore(int page, int size);
-    public List<MovieDTO> findByDateAfter(int page, int size);
-    public List<MovieDTO> findTopMoviesByReviewCount(int page, int size);
+     List<MovieDTO> findByDateBefore(int page, int size);
+     List<MovieDTO> findByDateAfter(int page, int size);
+     List<MovieDTO> findTopMoviesByReviewCount(int page, int size);
+     MovieDTO findById(int id);
 }

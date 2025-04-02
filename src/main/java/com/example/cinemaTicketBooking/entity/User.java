@@ -32,7 +32,7 @@ public class User {
 
 
     @OneToOne(mappedBy = "customer")
-    private Cart cart;
+    private Card card;
 
     @OneToMany(mappedBy = "customer")
     private List<Review> reviews;

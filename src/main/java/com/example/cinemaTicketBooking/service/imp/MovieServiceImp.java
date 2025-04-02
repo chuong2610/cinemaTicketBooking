@@ -1,10 +1,8 @@
 package com.example.cinemaTicketBooking.service.imp;
 
-import com.example.cinemaTicketBooking.dto.ImageDTO;
-import com.example.cinemaTicketBooking.dto.MovieDTO;
-import com.example.cinemaTicketBooking.dto.ReviewDTO;
-import com.example.cinemaTicketBooking.dto.TicketOrderDTO;
+import com.example.cinemaTicketBooking.dto.*;
 import com.example.cinemaTicketBooking.entity.Image;
+import com.example.cinemaTicketBooking.entity.Movie;
 import com.example.cinemaTicketBooking.entity.Review;
 import com.example.cinemaTicketBooking.entity.TicketOrder;
 import com.example.cinemaTicketBooking.repository.MovieRepository;
@@ -68,6 +66,14 @@ public class MovieServiceImp implements MovieService {
             ).toList();
             movieDTO.setGenres(genres);
 
+            List<ActorDTO> actorDTOs = movie.getMovieActors().stream().map(movieActor -> {
+                ActorDTO actorDTO = new ActorDTO();
+                actorDTO.setId(movieActor.getActor().getId());
+                actorDTO.setName(movieActor.getActor().getName());
+                return actorDTO;
+            }).toList();
+            movieDTO.setActorDTOs(actorDTOs);
+
             return movieDTO;
         }).toList();
 
@@ -116,6 +122,14 @@ public class MovieServiceImp implements MovieService {
             ).toList();
             movieDTO.setGenres(genres);
 
+            List<ActorDTO> actorDTOs = movie.getMovieActors().stream().map(movieActor -> {
+                ActorDTO actorDTO = new ActorDTO();
+                actorDTO.setId(movieActor.getActor().getId());
+                actorDTO.setName(movieActor.getActor().getName());
+                return actorDTO;
+            }).toList();
+            movieDTO.setActorDTOs(actorDTOs);
+
             return movieDTO;
         }).toList();
 
@@ -141,6 +155,7 @@ public class MovieServiceImp implements MovieService {
                 imageDTOs.add(imageDTO);
             }
             movieDTO.setImageDTOs(imageDTOs);
+
             List<ReviewDTO> reviewDTOs = new ArrayList<>();
             int total=0;
             for (Review review : movie.getReviews()) {
@@ -161,10 +176,19 @@ public class MovieServiceImp implements MovieService {
                 ticketOrderDTOs.add(ticketOrderDTO);
             }
             movieDTO.setTicketOrderDTOs(ticketOrderDTOs);
+
             List<String> genres = movie.getMovieGenres().stream().map(movieGenre ->
                 movieGenre.getGenre().getName()
             ).toList();
             movieDTO.setGenres(genres);
+
+            List<ActorDTO> actorDTOs = movie.getMovieActors().stream().map(movieActor -> {
+                ActorDTO actorDTO = new ActorDTO();
+                actorDTO.setId(movieActor.getActor().getId());
+                actorDTO.setName(movieActor.getActor().getName());
+                return actorDTO;
+            }).toList();
+            movieDTO.setActorDTOs(actorDTOs);
 
             return movieDTO;
         }).toList();
@@ -172,5 +196,57 @@ public class MovieServiceImp implements MovieService {
         return movieDTOs;
 
 
+    }
+
+    @Override
+    public MovieDTO findById(int id) {
+        Movie movie = movieRepository.findById(id).get();
+        MovieDTO movieDTO = new MovieDTO();
+        movieDTO.setId(movie.getId());
+        movieDTO.setTitle(movie.getTitle());
+        movieDTO.setDate(movie.getDate());
+        movieDTO.setDescription(movie.getDescription());
+        List< ImageDTO> imageDTOs = new ArrayList<>();
+        for(Image image: movie.getImages()){
+            ImageDTO imageDTO = new ImageDTO();
+            imageDTO.setId(image.getId());
+            imageDTO.setImg("http://localhost:8080/file/"+image.getImg());
+            imageDTOs.add(imageDTO);
+        }
+        movieDTO.setImageDTOs(imageDTOs);
+        List<ReviewDTO> reviewDTOs = new ArrayList<>();
+        int total=0;
+        for (Review review : movie.getReviews()) {
+            total+=review.getRating();
+            ReviewDTO reviewDTO = new ReviewDTO();
+            reviewDTO.setId(review.getId());
+            reviewDTO.setRating(review.getRating());
+            reviewDTO.setDescription(review.getDescription());
+            reviewDTOs.add(reviewDTO);
+        }
+        movieDTO.setAvrRating(total/movie.getReviews().size());
+        movieDTO.setReviewDTOs(reviewDTOs);
+
+        List<TicketOrderDTO> ticketOrderDTOs = new ArrayList<>();
+        for(TicketOrder ticketOrder: movie.getTicketOrders()){
+            TicketOrderDTO ticketOrderDTO = new TicketOrderDTO();
+            ticketOrderDTO.setId(ticketOrder.getId());
+            ticketOrderDTOs.add(ticketOrderDTO);
+        }
+        movieDTO.setTicketOrderDTOs(ticketOrderDTOs);
+        List<String> genres = movie.getMovieGenres().stream().map(movieGenre ->
+                movieGenre.getGenre().getName()
+        ).toList();
+        movieDTO.setGenres(genres);
+
+        List<ActorDTO> actorDTOs = movie.getMovieActors().stream().map(movieActor -> {
+            ActorDTO actorDTO = new ActorDTO();
+            actorDTO.setId(movieActor.getActor().getId());
+            actorDTO.setName(movieActor.getActor().getName());
+            return actorDTO;
+        }).toList();
+        movieDTO.setActorDTOs(actorDTOs);
+
+        return movieDTO;
     }
 }

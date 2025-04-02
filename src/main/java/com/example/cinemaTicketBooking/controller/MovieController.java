@@ -49,5 +49,15 @@ public class MovieController {
         return ResponseEntity.ok(baseResponse);
     }
 
+    @GetMapping("/movie-detail")
+    public ResponseEntity<?> topMovie(@RequestParam int id) {
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setData(movieService.findById(id));
+        baseResponse.setMessage("movie_detail");
+        baseResponse.setCode(200);
+        return ResponseEntity.ok(baseResponse);
+    }
+
 
 }
