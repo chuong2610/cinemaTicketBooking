@@ -10,5 +10,5 @@ import java.io.Serializable;
 @Data
 public class MovieGenreId implements Serializable {
     private int movieId;
-    private int actorId;
+    private int genreId;
 }

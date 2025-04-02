@@ -24,6 +24,8 @@ public class MovieServiceImp implements MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
+
+
     @Override
     public List<MovieDTO> findByDateBefore(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -61,6 +63,10 @@ public class MovieServiceImp implements MovieService {
                 ticketOrderDTOs.add(ticketOrderDTO);
             }
             movieDTO.setTicketOrderDTOs(ticketOrderDTOs);
+            List<String> genres = movie.getMovieGenres().stream().map(movieGenre ->
+                    movieGenre.getGenre().getName()
+            ).toList();
+            movieDTO.setGenres(genres);
 
             return movieDTO;
         }).toList();
@@ -105,6 +111,10 @@ public class MovieServiceImp implements MovieService {
                 ticketOrderDTOs.add(ticketOrderDTO);
             }
             movieDTO.setTicketOrderDTOs(ticketOrderDTOs);
+            List<String> genres = movie.getMovieGenres().stream().map(movieGenre ->
+                    movieGenre.getGenre().getName()
+            ).toList();
+            movieDTO.setGenres(genres);
 
             return movieDTO;
         }).toList();
@@ -127,7 +137,7 @@ public class MovieServiceImp implements MovieService {
             for(Image image: movie.getImages()){
                 ImageDTO imageDTO = new ImageDTO();
                 imageDTO.setId(image.getId());
-                imageDTO.setImg("localhot:8080/file/"+image.getImg());
+                imageDTO.setImg("http://localhost:8080/file/"+image.getImg());
                 imageDTOs.add(imageDTO);
             }
             movieDTO.setImageDTOs(imageDTOs);
@@ -151,6 +161,10 @@ public class MovieServiceImp implements MovieService {
                 ticketOrderDTOs.add(ticketOrderDTO);
             }
             movieDTO.setTicketOrderDTOs(ticketOrderDTOs);
+            List<String> genres = movie.getMovieGenres().stream().map(movieGenre ->
+                movieGenre.getGenre().getName()
+            ).toList();
+            movieDTO.setGenres(genres);
 
             return movieDTO;
         }).toList();

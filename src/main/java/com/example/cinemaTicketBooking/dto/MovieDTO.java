@@ -25,6 +25,8 @@ public class MovieDTO {
 
     private List<TicketOrderDTO>ticketOrderDTOs;
 
+    private List<String> genres;
+
 
 
 }
