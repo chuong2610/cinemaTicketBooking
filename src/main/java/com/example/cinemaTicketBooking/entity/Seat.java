@@ -12,7 +12,7 @@ public class Seat {
 
     private int number;
 
-    private int type;
+    private String type;
 
     @OneToOne(mappedBy = "seat")
     private TicketOrder ticketOrder;

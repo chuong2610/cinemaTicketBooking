@@ -21,6 +21,8 @@ public class Movie {
 
     private String description;
 
+    private String video;
+
     @OneToMany(mappedBy = "movie")
     private List<MovieActor> movieActors;
 

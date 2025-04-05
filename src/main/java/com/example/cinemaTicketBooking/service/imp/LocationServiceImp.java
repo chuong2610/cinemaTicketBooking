@@ -17,9 +17,9 @@ public class LocationServiceImp implements LocationService {
     private LocationRepository locationRepository;
 
     @Override
-    public List<LocationDTO> findByCityId(int id, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        List<LocationDTO> locationDTOs = locationRepository.findByCityId(id,pageable).stream().map(location -> {
+    public List<LocationDTO> findByCityId(int id) {
+
+        List<LocationDTO> locationDTOs = locationRepository.findByCityId(id).stream().map(location -> {
             LocationDTO locationDTO = new LocationDTO();
             locationDTO.setId(location.getId());
             locationDTO.setName(location.getName());
@@ -31,9 +31,9 @@ public class LocationServiceImp implements LocationService {
     }
 
     @Override
-    public List<LocationDTO> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        List<LocationDTO> locationDTOs = locationRepository.findAll(pageable).stream().map(location -> {
+    public List<LocationDTO> findAll() {
+
+        List<LocationDTO> locationDTOs = locationRepository.findAll().stream().map(location -> {
             LocationDTO locationDTO = new LocationDTO();
             locationDTO.setId(location.getId());
             locationDTO.setName(location.getName());

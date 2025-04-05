@@ -10,26 +10,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("locations")
+@RequestMapping("location")
 public class LocationController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping(params = {"page", "size"})
-    public ResponseEntity<?> findAll(@RequestParam int page, @RequestParam int size) {
+    @GetMapping
+    public ResponseEntity<?> findAll() {
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setMessage("Locations All");
         baseResponse.setCode(200);
-        baseResponse.setData(locationService.findAll(page, size));
+        baseResponse.setData(locationService.findAll());
         return ResponseEntity.ok(baseResponse);
     }
 
-    @GetMapping(params = {"id" , "page", "size"})
-    public ResponseEntity<?> findByCityId(@RequestParam int id,@RequestParam int page, @RequestParam int size) {
+    @GetMapping("/by-city")
+    public ResponseEntity<?> findByCityId(@RequestParam int id) {
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setMessage("Locations All");
         baseResponse.setCode(200);
-        baseResponse.setData(locationService.findByCityId(id,page, size));
+        baseResponse.setData(locationService.findByCityId(id));
         return ResponseEntity.ok(baseResponse);
     }
 

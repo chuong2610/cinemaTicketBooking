@@ -17,9 +17,9 @@ public class CityServiceImp implements CityService {
     @Autowired
     private CityReposity cityReposity;
     @Override
-    public List<CityDTO> findCities(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        List<CityDTO> cities = cityReposity.findAll(pageable).stream().map(city -> {
+    public List<CityDTO> findCities() {
+
+        List<CityDTO> cities = cityReposity.findAll().stream().map(city -> {
             CityDTO cityDTO = new CityDTO();
             cityDTO.setId(city.getId());
             cityDTO.setName(city.getName());

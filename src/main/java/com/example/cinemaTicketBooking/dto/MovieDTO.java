@@ -17,6 +17,8 @@ public class MovieDTO {
 
     private String description;
 
+    private String video;
+
     private float avrRating;
 
     private List<ImageDTO>imageDTOs;

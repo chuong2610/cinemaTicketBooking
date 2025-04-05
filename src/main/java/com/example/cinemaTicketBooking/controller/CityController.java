@@ -17,11 +17,11 @@ public class CityController {
     private CityService cityService;
 
     @GetMapping
-    public ResponseEntity<?> findCities(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<?> findCities() {
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setMessage("cities");
         baseResponse.setCode(200);
-        baseResponse.setData(cityService.findCities(page, size));
+        baseResponse.setData(cityService.findCities());
         return ResponseEntity.ok(baseResponse);
     }
 }

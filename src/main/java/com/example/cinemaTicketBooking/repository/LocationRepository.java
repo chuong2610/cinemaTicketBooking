@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Integer> {
-    List<Location> findByCityId(int id, Pageable pageable);
+    List<Location> findByCityId(int id);
 }

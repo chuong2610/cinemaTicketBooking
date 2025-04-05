@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -20,4 +21,8 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
             "GROUP BY m.id " +
             "ORDER BY COUNT(r.id) DESC")
     List<Movie> findTopMoviesByReviewCount(Pageable pageable);
+
+    List<Movie> findByTicketOrdersSeatRoomLocationIdAndSchedulesDateBetween(int id, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    List<Movie> findByTicketOrdersSeatRoomLocationId(int id ,Pageable pageable);
 }
