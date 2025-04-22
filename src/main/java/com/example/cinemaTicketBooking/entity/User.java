@@ -21,6 +21,8 @@ public class User {
 
     private String password;
 
+    private String img;
+
     @ManyToOne
 @JoinColumn(name = "locationId")
     private Location location;

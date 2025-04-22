@@ -9,4 +9,5 @@ public class UserDTO {
     private String email;
     private String phone;
     private CardDTO cardDTO;
+    private String img;
 }

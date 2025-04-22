@@ -13,6 +13,7 @@ public class ReviewDTO {
 
     private int rating;
 
+    private UserDTO userDTO;
 
     private MovieDTO movieDTO;
 }

@@ -20,4 +20,6 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private List<Seat> seats;
+    @OneToMany(mappedBy = "room")
+    private List<Schedule> schedules;
 }

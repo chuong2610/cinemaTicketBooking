@@ -229,6 +229,13 @@ public class MovieServiceImp implements MovieService {
         for (Review review : movie.getReviews()) {
             total+=review.getRating();
             ReviewDTO reviewDTO = new ReviewDTO();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setName(review.getCustomer().getName());
+            userDTO.setId(review.getCustomer().getId());
+            userDTO.setEmail(review.getCustomer().getEmail());
+            userDTO.setImg("http://localhost:8080/file/"+review.getCustomer().getImg());
+            userDTO.setPhone(review.getCustomer().getPhone());
+            reviewDTO.setUserDTO(userDTO);
             reviewDTO.setId(review.getId());
             reviewDTO.setRating(review.getRating());
             reviewDTO.setDescription(review.getDescription());
@@ -253,9 +260,14 @@ public class MovieServiceImp implements MovieService {
             ActorDTO actorDTO = new ActorDTO();
             actorDTO.setId(movieActor.getActor().getId());
             actorDTO.setName(movieActor.getActor().getName());
+            actorDTO.setBirthday(movieActor.getActor().getBirthday());
+            actorDTO.setImg("http://localhost:8080/file/"+movieActor.getActor().getImg());
             return actorDTO;
         }).toList();
         movieDTO.setActorDTOs(actorDTOs);
+
+
+
 
         return movieDTO;
     }

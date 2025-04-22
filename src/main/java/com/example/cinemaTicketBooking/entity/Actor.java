@@ -18,6 +18,7 @@ public class Actor {
     private String name;
     private LocalDate birthday;
     private String description;
+    private String img;
 
     @OneToMany(mappedBy = "actor")
     private List<MovieActor> movieActors;

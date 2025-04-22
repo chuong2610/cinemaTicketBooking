@@ -18,6 +18,7 @@ public class ActorServiceImp implements ActorService {
         actorDTO.setId(actor.getId());
         actorDTO.setName(actor.getName());
         actorDTO.setDescription(actor.getDescription());
+        actorDTO.setImg("http://localhost:8080/file/"+actor.getImg());
 
         return actorDTO;
     }
