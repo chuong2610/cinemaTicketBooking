@@ -16,6 +16,9 @@ public class Product {
 
     private String description;
 
+    private double price;
+    private String img;
+
     @OneToMany(mappedBy = "product")
     private List<ProductOrder> productOrders;
 }
