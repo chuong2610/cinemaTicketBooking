@@ -115,20 +115,25 @@ public class SeatServiceImp implements SeatService {
         return seatRepository.findSeatByMovieIdAndScheduleDateAndRowAndNumber(seatDTO.getMovieId(),seatDTO.getSchedule(),seatDTO.getRow(),seatDTO.getNumber()).getTicketOrder().getTicketPrice().getPrice();
     }
 
-    public Set<String> getSeatsByUserIdAndMovieSchedule(String userId, int movieId, LocalDateTime schedule) {
+    public Set<String> getSeatsByUserIdAndMovieSchedule(int userId, int movieId, LocalDateTime schedule) {
         // Chuyển LocalDateTime về dạng chuỗi giống lúc bạn lưu key vào Redis
         String scheduleStr = schedule.toString(); // ISO-8601 dạng: 2025-05-08T19:00
 
         // Tạo pattern tìm tất cả key ghế theo movieId và schedule
         String pattern = "seat:" + movieId + ":" + scheduleStr + ":*";
+        if(redisTemplate.hasKey(pattern)) {
+            Set<String> keys = redisTemplate.keys(pattern);
 
-        Set<String> keys = redisTemplate.keys(pattern);
-        if (keys == null) return Collections.emptySet();
 
-        // Lọc ra các key có value bằng userId
-        return keys.stream()
-                .filter(key -> userId.equals(redisTemplate.opsForValue().get(key)))
-                .collect(Collectors.toSet());
+            // Lọc ra các key có value bằng userId
+            return keys.stream()
+                    .filter(key -> String.valueOf(userId).equals(redisTemplate.opsForValue().get(key)))
+                    .collect(Collectors.toSet());
+        }
+        else
+            return null;
+
+
     }
 
     public void releaseSeats( List<SeatDTO> seats) {
@@ -184,6 +189,12 @@ public class SeatServiceImp implements SeatService {
             }
         }
         return selectedSeats;
+    }
+
+    public void resetTime(Set<String> keys){
+        for (String key : keys) {
+            redisTemplate.expire(key, Duration.ofSeconds(2*60));
+        }
     }
 
 }

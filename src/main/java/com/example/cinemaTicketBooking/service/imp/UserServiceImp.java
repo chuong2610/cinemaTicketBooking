@@ -5,18 +5,27 @@ import com.example.cinemaTicketBooking.dto.UserDTO;
 import com.example.cinemaTicketBooking.entity.Card;
 import com.example.cinemaTicketBooking.entity.User;
 import com.example.cinemaTicketBooking.repository.UserRepository;
+import com.example.cinemaTicketBooking.service.SeatService;
 import com.example.cinemaTicketBooking.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Service
 public class UserServiceImp implements UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private SeatService seatService;
+
     @Override
     public UserDTO findById(int id) {
         User user = userRepository.findById(id).get();
@@ -36,6 +45,11 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void syncTemporaryUserToRealUser(int realUserId, int tempUserId, int movieId, LocalDateTime schedule) {
-
+        Set<String> keys=  seatService.getSeatsByUserIdAndMovieSchedule(tempUserId,movieId,schedule);
+        if(keys!= null){
+            for (String key : keys) {
+                redisTemplate.opsForValue().set(key, String.valueOf(realUserId));
+            }
+        }
     }
 }

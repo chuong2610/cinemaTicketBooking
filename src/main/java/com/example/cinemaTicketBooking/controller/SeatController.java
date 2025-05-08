@@ -47,7 +47,6 @@ public class SeatController {
 
     @PostMapping("/release-selecting")
     public ResponseEntity<?> releaseTempSeats(@RequestBody SeatReleaseRequest request) {
-        System.out.println("seat release-selecting");
         Set<String> keys = seatService.getSeatsByUserIdAndMovieSchedule(
                 request.getUserId(),
                 request.getMovieId(),
@@ -55,6 +54,19 @@ public class SeatController {
         );
 
         seatService.releaseSeats(seatService.getSeatDTOFromKey(keys));
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-time")
+    public ResponseEntity<?> resetTime(@RequestBody SeatReleaseRequest request) {
+        Set<String> keys = seatService.getSeatsByUserIdAndMovieSchedule(
+                request.getUserId(),
+                request.getMovieId(),
+                request.getSchedule()
+        );
+
+        seatService.resetTime(keys);
 
         return ResponseEntity.ok().build();
     }

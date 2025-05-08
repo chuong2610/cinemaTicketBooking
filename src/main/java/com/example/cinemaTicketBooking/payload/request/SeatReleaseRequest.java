@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class SeatReleaseRequest {
-    private String userId;
+    private int userId;
     private int movieId;
     private LocalDateTime schedule;
 }
