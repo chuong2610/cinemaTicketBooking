@@ -23,7 +23,7 @@ public class MovieController {
 
     @GetMapping("/now-showing")
     public ResponseEntity<?> nowShowing(@RequestParam int page, @RequestParam int size) {
-        List<MovieDTO> movieDTOS= movieService.findByDateBefore(page, size);
+        List<MovieDTO> movieDTOS= movieService.findMovieNowShowing(page, size);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setData(movieDTOS);
         baseResponse.setMessage("Now showing");
@@ -33,7 +33,7 @@ public class MovieController {
 
     @GetMapping("/upcoming")
     public ResponseEntity<?> upcoming(@RequestParam int page, @RequestParam int size) {
-        List<MovieDTO> movieDTOS= movieService.findByDateAfter(page, size);
+        List<MovieDTO> movieDTOS= movieService.findMovieUpComming(page, size);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setData(movieDTOS);
         baseResponse.setMessage("upcoming");

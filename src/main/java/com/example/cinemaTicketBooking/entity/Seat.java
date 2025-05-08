@@ -10,9 +10,13 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String row;
+
     private int number;
 
     private String type;
+
+    private int status;
 
     @OneToOne(mappedBy = "seat")
     private TicketOrder ticketOrder;

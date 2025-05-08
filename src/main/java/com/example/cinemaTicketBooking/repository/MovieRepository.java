@@ -13,7 +13,13 @@ import java.util.List;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    List<Movie> findByDateBefore(LocalDate date,Pageable pageable);
+    @Query("""
+    SELECT DISTINCT m FROM Movie m
+    JOIN m.schedules s
+    WHERE m.date <= CURRENT_DATE
+    AND s.date >= CURRENT_TIMESTAMP
+""")
+    List<Movie> findNowShowingMovies(Pageable pageable);
     List<Movie> findByDateAfter(LocalDate date,Pageable pageable);
 
     @Query("SELECT m FROM Movie m " +

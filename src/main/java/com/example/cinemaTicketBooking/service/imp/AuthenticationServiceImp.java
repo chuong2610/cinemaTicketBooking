@@ -26,7 +26,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
         if(userOptional.isPresent()) {
             User user = userOptional.get();
             if(passwordEncoder.matches(password, user.getPassword())) {
-                token=jwtHelper.generateToken(user.getRole().getName());
+                token=jwtHelper.generateToken(user.getId(),user.getRole().getName());
             }
         }
         return token;

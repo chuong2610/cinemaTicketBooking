@@ -29,11 +29,12 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
         if(authenHeader != null && authenHeader.startsWith("Bearer ")){
             String token = authenHeader.substring(7);
             String roleName = jwtHelper.decodeToken(token);
+            int id = jwtHelper.getIdUserFromToken(token);
             if(!roleName.equals("")){
                 List<GrantedAuthority> roles = new ArrayList<>();
                 SimpleGrantedAuthority role = new SimpleGrantedAuthority(roleName);
                 roles.add(role);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("","",roles);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(id,"",roles);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 

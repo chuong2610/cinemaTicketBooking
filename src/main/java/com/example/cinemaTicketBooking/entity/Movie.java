@@ -17,6 +17,8 @@ public class Movie {
 
     private LocalDate date;
 
+    private LocalDate endDate;
+
     private int duration;
 
     private String description;

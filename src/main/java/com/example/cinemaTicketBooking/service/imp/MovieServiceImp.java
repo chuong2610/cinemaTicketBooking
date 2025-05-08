@@ -26,9 +26,9 @@ public class MovieServiceImp implements MovieService {
 
 
     @Override
-    public List<MovieDTO> findByDateBefore(int page, int size) {
+    public List<MovieDTO> findMovieNowShowing(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<MovieDTO> movieDTOs = movieRepository.findTopMoviesByReviewCount(pageable).stream().map(movie -> {
+        List<MovieDTO> movieDTOs = movieRepository.findNowShowingMovies(pageable).stream().map(movie -> {
             MovieDTO movieDTO = new MovieDTO();
             movieDTO.setId(movie.getId());
             movieDTO.setTitle(movie.getTitle());
@@ -85,9 +85,9 @@ public class MovieServiceImp implements MovieService {
     }
 
     @Override
-    public List<MovieDTO> findByDateAfter(int page, int size) {
+    public List<MovieDTO> findMovieUpComming(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<MovieDTO> movieDTOs = movieRepository.findTopMoviesByReviewCount(pageable).stream().map(movie -> {
+        List<MovieDTO> movieDTOs = movieRepository.findByDateAfter(LocalDate.now(),pageable).stream().map(movie -> {
             MovieDTO movieDTO = new MovieDTO();
             movieDTO.setId(movie.getId());
             movieDTO.setTitle(movie.getTitle());

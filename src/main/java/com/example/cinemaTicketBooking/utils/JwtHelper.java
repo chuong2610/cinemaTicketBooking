@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +16,20 @@ public class JwtHelper {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String generateToken(String data) {
+    public String generateToken(int id,String data) {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
-        return Jwts.builder().setSubject(data).signWith(key).compact();
+        return Jwts.builder().setSubject(data).id(String.valueOf(id)).signWith(key).compact();
     }
 
+    public int getIdUserFromToken(String token){
+        SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        try{
+            String id = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getId();
+            return Integer.parseInt(id);
+        }catch (Exception e){
+            throw new RuntimeException("Error " + e.getMessage());
+        }
+    }
 
     public String decodeToken(String token) {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
