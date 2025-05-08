@@ -12,7 +12,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws-seat")
-                .setAllowedOrigins("http://127.0.0.1:5502") // Thay bằng tên miền frontend
+                .setAllowedOrigins("http://127.0.0.1:5503") // Thay bằng tên miền frontend
                 .withSockJS();
 
     }

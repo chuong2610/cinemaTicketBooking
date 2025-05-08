@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 
@@ -15,8 +16,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SeatServiceImp implements SeatService {
@@ -25,6 +28,9 @@ public class SeatServiceImp implements SeatService {
 
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
 
 
@@ -85,6 +91,65 @@ public class SeatServiceImp implements SeatService {
         Set<String> keys = redisTemplate.keys(pattern);
 
         // Chuyển các key thành các SeatSelectionMessage
+
+
+        return getSeatDTOFromKey(keys);
+    }
+
+    public List<SeatDTO> getSelectedSeats(SeatDTO seatDTO) {
+        List<SeatDTO> seatDTOs = seatRepository.findSeatsByMovieIdAndDate(seatDTO.getMovieId(),seatDTO.getSchedule()).stream().map(seat -> {
+            SeatDTO sDto = new SeatDTO();
+            sDto.setMovieId(seatDTO.getMovieId());
+            sDto.setSchedule(seatDTO.getSchedule());
+            sDto.setRow(seat.getRow());
+            sDto.setNumber(seat.getNumber());
+            sDto.setUserId(seat.getTicketOrder().getBill().getCustomer().getId());
+            sDto.setAction("selected");
+            return sDto;
+        }).toList();
+        return seatDTOs;
+    }
+
+    @Override
+    public double getSeatPrice(SeatDTO seatDTO) {
+        return seatRepository.findSeatByMovieIdAndScheduleDateAndRowAndNumber(seatDTO.getMovieId(),seatDTO.getSchedule(),seatDTO.getRow(),seatDTO.getNumber()).getTicketOrder().getTicketPrice().getPrice();
+    }
+
+    public Set<String> getSeatsByUserIdAndMovieSchedule(String userId, int movieId, LocalDateTime schedule) {
+        // Chuyển LocalDateTime về dạng chuỗi giống lúc bạn lưu key vào Redis
+        String scheduleStr = schedule.toString(); // ISO-8601 dạng: 2025-05-08T19:00
+
+        // Tạo pattern tìm tất cả key ghế theo movieId và schedule
+        String pattern = "seat:" + movieId + ":" + scheduleStr + ":*";
+
+        Set<String> keys = redisTemplate.keys(pattern);
+        if (keys == null) return Collections.emptySet();
+
+        // Lọc ra các key có value bằng userId
+        return keys.stream()
+                .filter(key -> userId.equals(redisTemplate.opsForValue().get(key)))
+                .collect(Collectors.toSet());
+    }
+
+    public void releaseSeats( List<SeatDTO> seats) {
+
+        for (SeatDTO seat : seats) {
+            String key = "seat:" + seat.getMovieId() + ":" + seat.getSchedule().toString() + ":" + seat.getRow() + ":" + seat.getNumber();
+            String userIdInRedis = redisTemplate.opsForValue().get(key);
+            redisTemplate.delete(key); // Nhả ghế
+            BaseResponse baseResponse = new BaseResponse();
+            baseResponse.setCode(200);
+            baseResponse.setData(seat);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String formattedSchedule = seat.getSchedule().format(formatter);
+            messagingTemplate.convertAndSend(
+                    "/topic/seats/" + seat.getMovieId() + "/" + formattedSchedule,
+                    baseResponse);
+
+        }
+    }
+
+    public List<SeatDTO> getSeatDTOFromKey(Set<String> keys){
         List<SeatDTO> selectedSeats = new ArrayList<>();
         for (String key : keys) {
             String userId = redisTemplate.opsForValue().get(key);
@@ -118,27 +183,7 @@ public class SeatServiceImp implements SeatService {
                 selectedSeats.add(seatDTO);
             }
         }
-
         return selectedSeats;
-    }
-
-    public List<SeatDTO> getSelectedSeats(SeatDTO seatDTO) {
-        List<SeatDTO> seatDTOs = seatRepository.findSeatsByMovieIdAndDate(seatDTO.getMovieId(),seatDTO.getSchedule()).stream().map(seat -> {
-            SeatDTO sDto = new SeatDTO();
-            sDto.setMovieId(seatDTO.getMovieId());
-            sDto.setSchedule(seatDTO.getSchedule());
-            sDto.setRow(seat.getRow());
-            sDto.setNumber(seat.getNumber());
-            sDto.setUserId(seat.getTicketOrder().getBill().getCustomer().getId());
-            sDto.setAction("selected");
-            return sDto;
-        }).toList();
-        return seatDTOs;
-    }
-
-    @Override
-    public double getSeatPrice(SeatDTO seatDTO) {
-        return seatRepository.findSeatByMovieIdAndScheduleDateAndRowAndNumber(seatDTO.getMovieId(),seatDTO.getSchedule(),seatDTO.getRow(),seatDTO.getNumber()).getTicketOrder().getTicketPrice().getPrice();
     }
 
 }

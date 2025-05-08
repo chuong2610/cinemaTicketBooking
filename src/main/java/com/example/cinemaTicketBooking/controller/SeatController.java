@@ -1,22 +1,26 @@
 package com.example.cinemaTicketBooking.controller;
 
 import com.example.cinemaTicketBooking.dto.SeatDTO;
+import com.example.cinemaTicketBooking.payload.request.SeatReleaseRequest;
 import com.example.cinemaTicketBooking.payload.response.BaseResponse;
 import com.example.cinemaTicketBooking.service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/seat")
 public class SeatController {
     @Autowired
     private SeatService seatService;
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
+
     @GetMapping("/selecting")
     public ResponseEntity<?> getSeatSelecting(@RequestParam int movieId, @RequestParam LocalDateTime schedule) {
         SeatDTO seatDTO = new SeatDTO();
@@ -39,5 +43,19 @@ public class SeatController {
         baseResponse.setMessage("user_detail");
         baseResponse.setCode(200);
         return ResponseEntity.ok(baseResponse);
+    }
+
+    @PostMapping("/release-selecting")
+    public ResponseEntity<?> releaseTempSeats(@RequestBody SeatReleaseRequest request) {
+        System.out.println("seat release-selecting");
+        Set<String> keys = seatService.getSeatsByUserIdAndMovieSchedule(
+                request.getUserId(),
+                request.getMovieId(),
+                request.getSchedule()
+        );
+
+        seatService.releaseSeats(seatService.getSeatDTOFromKey(keys));
+
+        return ResponseEntity.ok().build();
     }
 }

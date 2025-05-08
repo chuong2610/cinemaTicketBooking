@@ -10,6 +10,9 @@ import com.example.cinemaTicketBooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Service
 public class UserServiceImp implements UserService {
     @Autowired
@@ -29,5 +32,10 @@ public class UserServiceImp implements UserService {
         cardDTO.setPoint(user.getCard().getPoint());
         userDTO.setCardDTO(cardDTO);
         return userDTO;
+    }
+
+    @Override
+    public void syncTemporaryUserToRealUser(int realUserId, int tempUserId, int movieId, LocalDateTime schedule) {
+
     }
 }
