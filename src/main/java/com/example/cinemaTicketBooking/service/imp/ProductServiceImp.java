@@ -25,6 +25,15 @@ public class ProductServiceImp implements ProductService {
         return productDTOs;
     }
 
+    @Override
+    public List<ProductDTO> findByType(String type) {
+        List<ProductDTO> productDTOs =new ArrayList<>();
+        for (Product product : productRepository.findByType(type)) {
+            productDTOs.add(mapToDTO(product));
+        }
+        return productDTOs;
+    }
+
     public ProductDTO mapToDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(product.getId());
@@ -32,6 +41,7 @@ public class ProductServiceImp implements ProductService {
         productDTO.setName(product.getName());
         productDTO.setPrice(product.getPrice());
         productDTO.setImg("http://localhost:8080/file/"+product.getImg());
+        productDTO.setType(product.getType());
         return productDTO;
     }
 }
