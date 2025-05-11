@@ -88,6 +88,7 @@ public class SeatServiceImp implements SeatService {
         String pattern = "seat:" + message.getMovieId() + ":" + message.getSchedule() + ":*";
 
         // Lấy tất cả các key ghế đã chọn
+
         Set<String> keys = redisTemplate.keys(pattern);
 
         // Chuyển các key thành các SeatSelectionMessage
@@ -116,24 +117,20 @@ public class SeatServiceImp implements SeatService {
     }
 
     public Set<String> getSeatsByUserIdAndMovieSchedule(int userId, int movieId, LocalDateTime schedule) {
-        // Chuyển LocalDateTime về dạng chuỗi giống lúc bạn lưu key vào Redis
-        String scheduleStr = schedule.toString(); // ISO-8601 dạng: 2025-05-08T19:00
-
-        // Tạo pattern tìm tất cả key ghế theo movieId và schedule
+        String scheduleStr = schedule.toString(); // ISO-8601, ex: 2025-05-10T19:00
         String pattern = "seat:" + movieId + ":" + scheduleStr + ":*";
-        if(redisTemplate.hasKey(pattern)) {
-            Set<String> keys = redisTemplate.keys(pattern);
 
 
-            // Lọc ra các key có value bằng userId
-            return keys.stream()
-                    .filter(key -> String.valueOf(userId).equals(redisTemplate.opsForValue().get(key)))
-                    .collect(Collectors.toSet());
+        Set<String> keys = redisTemplate.keys(pattern);  // keys(...) hỗ trợ pattern matching
+
+        if (keys == null || keys.isEmpty()) {
+            return Collections.emptySet();
         }
-        else
-            return null;
 
-
+        // Lọc các key có value == userId
+        return keys.stream()
+                .filter(key -> String.valueOf(userId).equals(redisTemplate.opsForValue().get(key)))
+                .collect(Collectors.toSet());
     }
 
     public void releaseSeats( List<SeatDTO> seats) {
@@ -193,6 +190,7 @@ public class SeatServiceImp implements SeatService {
 
     public void resetTime(Set<String> keys){
         for (String key : keys) {
+            System.out.println(key);
             redisTemplate.expire(key, Duration.ofSeconds(2*60));
         }
     }

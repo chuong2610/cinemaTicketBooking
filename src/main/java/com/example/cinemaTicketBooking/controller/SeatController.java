@@ -70,4 +70,7 @@ public class SeatController {
 
         return ResponseEntity.ok().build();
     }
+
+
+
 }
