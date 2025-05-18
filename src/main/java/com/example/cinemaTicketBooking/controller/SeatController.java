@@ -54,7 +54,6 @@ public class SeatController {
         );
 
         seatService.releaseSeats(seatService.getSeatDTOFromKey(keys));
-
         return ResponseEntity.ok().build();
     }
 

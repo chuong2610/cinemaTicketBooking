@@ -32,7 +32,6 @@ public class CheckoutServiceImp implements CheckoutService {
         checkoutRessponse.setLocation(request.getLocation());
 
         Set<String> keys=seatService.getSeatsByUserIdAndMovieSchedule(request.getUserId(), request.getMovieId(), request.getSchedule());
-        ;
         for(SeatDTO seatDTO: seatService.getSeatDTOFromKey(keys)){
             totalPrice += seatDTO.getPrice();
             seats.add(seatDTO.getRow()+seatDTO.getNumber());

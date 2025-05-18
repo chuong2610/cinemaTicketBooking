@@ -139,6 +139,7 @@ public class SeatServiceImp implements SeatService {
             String key = "seat:" + seat.getMovieId() + ":" + seat.getSchedule().toString() + ":" + seat.getRow() + ":" + seat.getNumber();
             String userIdInRedis = redisTemplate.opsForValue().get(key);
             redisTemplate.delete(key); // Nhả ghế
+            seat.setAction("unselect");
             BaseResponse baseResponse = new BaseResponse();
             baseResponse.setCode(200);
             baseResponse.setData(seat);
@@ -190,9 +191,23 @@ public class SeatServiceImp implements SeatService {
 
     public void resetTime(Set<String> keys){
         for (String key : keys) {
-            System.out.println(key);
             redisTemplate.expire(key, Duration.ofSeconds(2*60));
         }
     }
+
+//    public void updateSeatUI(List<SeatDTO> seats) {
+//        for (SeatDTO seat : seats) {
+//            seat.setAction("unselect");
+//            BaseResponse baseResponse = new BaseResponse();
+//            baseResponse.setCode(200);
+//            baseResponse.setData(seat);
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+//            String formattedSchedule = seat.getSchedule().format(formatter);
+//            messagingTemplate.convertAndSend(
+//                    "/topic/seats/" + seat.getMovieId() + "/" + formattedSchedule,
+//                    baseResponse
+//            );
+//        }
+//    }
 
 }
