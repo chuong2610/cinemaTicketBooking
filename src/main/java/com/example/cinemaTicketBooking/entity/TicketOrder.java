@@ -12,9 +12,13 @@ public class TicketOrder {
     private int id;
 
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "ticketPriceId")
     private TicketPrice ticketPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "movieId")
+    private Movie movie;
 
     @ManyToOne
     @JoinColumn(name = "billId")

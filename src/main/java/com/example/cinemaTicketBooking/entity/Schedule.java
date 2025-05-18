@@ -13,7 +13,7 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private LocalDateTime dateTime;
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "movieId")
@@ -23,7 +23,7 @@ public class Schedule {
     @JoinColumn(name = "roomId")
     private Room room;
 
-    @OneToMany(mappedBy = "schedule")
-    private List<TicketPrice>ticketPrices ;
+
+
 
 }

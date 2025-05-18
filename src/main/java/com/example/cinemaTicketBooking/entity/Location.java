@@ -22,4 +22,8 @@ public class Location {
     @OneToMany(mappedBy = "location")
     private List<Room> rooms;
 
+    @ManyToOne
+    @JoinColumn(name = "cityId")
+    private City city;
+
 }

@@ -17,9 +17,13 @@ public class Movie {
 
     private LocalDate date;
 
+    private LocalDate endDate;
+
     private int duration;
 
     private String description;
+
+    private String video;
 
     @OneToMany(mappedBy = "movie")
     private List<MovieActor> movieActors;
@@ -35,5 +39,10 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie")
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "movie")
+    private List<TicketOrder> ticketOrders;
+
+
 
 }

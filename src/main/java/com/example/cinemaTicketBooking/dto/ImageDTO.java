@@ -6,6 +6,6 @@ import lombok.Data;
 public class ImageDTO {
     private int id;
     private String img;
-    private MovieDTO movieDTO;
+
 
 }

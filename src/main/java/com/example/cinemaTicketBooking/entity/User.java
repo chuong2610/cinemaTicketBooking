@@ -21,6 +21,8 @@ public class User {
 
     private String password;
 
+    private String img;
+
     @ManyToOne
 @JoinColumn(name = "locationId")
     private Location location;
@@ -32,7 +34,7 @@ public class User {
 
 
     @OneToOne(mappedBy = "customer")
-    private Cart cart;
+    private Card card;
 
     @OneToMany(mappedBy = "customer")
     private List<Review> reviews;

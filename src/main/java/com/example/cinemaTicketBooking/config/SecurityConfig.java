@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(request ->{
-                    request.requestMatchers("/auth/sign-in","/file/**","/home/**").permitAll();
+                    request.requestMatchers("/auth/sign-in","/file/**","/movie/**","/genres/**","/cities/**","/location/**","/user/**","/actor/**","/schedule/**","/ws-seat/**","/seat/**","/product/**").permitAll();
                     request.anyRequest().authenticated();
                 })
                 .addFilterBefore(customSecurityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -35,9 +35,10 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500"));
+        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5503"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

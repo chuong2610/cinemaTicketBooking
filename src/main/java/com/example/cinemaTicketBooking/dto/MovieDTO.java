@@ -17,7 +17,19 @@ public class MovieDTO {
 
     private String description;
 
+    private String video;
+
+    private float avrRating;
+
     private List<ImageDTO>imageDTOs;
+
+    private List<ReviewDTO>reviewDTOs;
+
+    private List<TicketOrderDTO>ticketOrderDTOs;
+
+    private List<String> genres;
+
+    private List<ActorDTO>actorDTOs;
 
 
 
