@@ -182,6 +182,7 @@ public class SeatServiceImp implements SeatService {
                 seatDTO.setRow(rowStr);
                 seatDTO.setNumber(Integer.parseInt(numberStr));
                 seatDTO.setUserId(Integer.parseInt(userId));
+                seatDTO.setPrice(getSeatPrice(seatDTO));
                 seatDTO.setAction("select");
                 selectedSeats.add(seatDTO);
             }
@@ -195,19 +196,5 @@ public class SeatServiceImp implements SeatService {
         }
     }
 
-//    public void updateSeatUI(List<SeatDTO> seats) {
-//        for (SeatDTO seat : seats) {
-//            seat.setAction("unselect");
-//            BaseResponse baseResponse = new BaseResponse();
-//            baseResponse.setCode(200);
-//            baseResponse.setData(seat);
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-//            String formattedSchedule = seat.getSchedule().format(formatter);
-//            messagingTemplate.convertAndSend(
-//                    "/topic/seats/" + seat.getMovieId() + "/" + formattedSchedule,
-//                    baseResponse
-//            );
-//        }
-//    }
 
 }

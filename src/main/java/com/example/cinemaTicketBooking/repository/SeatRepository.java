@@ -27,7 +27,7 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
             "AND sch.date = :date " +
             "AND s.row = :row " +
             "AND s.number = :number")
-    Seat findSeatByMovieIdAndScheduleDateAndRowAndNumber(@Param("movieId") int movieId,
+    Seat  findSeatByMovieIdAndScheduleDateAndRowAndNumber(@Param("movieId") int movieId,
                                                          @Param("date") LocalDateTime date,
                                                          @Param("row") String row,
                                                          @Param("number") int number);
