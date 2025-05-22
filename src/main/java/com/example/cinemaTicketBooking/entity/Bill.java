@@ -15,13 +15,13 @@ public class Bill {
 
     private LocalDateTime createTime;
 
+    private double totalAmount;
+
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "customerId")
     private User customer;
-
-    @ManyToOne
-    @JoinColumn(name = "employeeId")
-    private User employee;
 
     @OneToMany(mappedBy = "bill")
     private List<TicketOrder> tickerOrders;

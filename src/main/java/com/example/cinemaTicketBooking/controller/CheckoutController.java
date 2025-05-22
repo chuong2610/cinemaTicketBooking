@@ -1,5 +1,6 @@
 package com.example.cinemaTicketBooking.controller;
 
+import com.example.cinemaTicketBooking.dto.CheckoutDTO;
 import com.example.cinemaTicketBooking.dto.SeatDTO;
 import com.example.cinemaTicketBooking.payload.request.CheckoutRequest;
 import com.example.cinemaTicketBooking.payload.request.SeatReleaseRequest;
@@ -18,13 +19,16 @@ import java.util.Set;
 public class CheckoutController {
     @Autowired
     private CheckoutService checkoutService;
-    @PostMapping("/information")
-    public ResponseEntity<?> checkoutInformation(@RequestBody CheckoutRequest request) {
+    @PostMapping("/product")
+    public ResponseEntity<?> checkoutProduct(@RequestBody CheckoutRequest request) {
 
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setData(checkoutService.checkoutInformation(request));
-        baseResponse.setMessage("checout information");
+        baseResponse.setMessage("checout product");
         baseResponse.setCode(200);
         return ResponseEntity.ok(baseResponse);
     }
+
+
+
 }

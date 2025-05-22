@@ -42,6 +42,5 @@ public class User {
     @OneToMany(mappedBy = "customer")
     private List<Bill> billCustomer;
 
-    @OneToMany(mappedBy = "employee")
-    private List<Bill> billEmployee;
+
 }

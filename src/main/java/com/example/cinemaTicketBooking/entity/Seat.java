@@ -22,6 +22,10 @@ public class Seat {
     private TicketOrder ticketOrder;
 
     @ManyToOne
+    @JoinColumn(name = "ticketPriceId")
+    private TicketPrice ticketPrice;
+
+    @ManyToOne
     @JoinColumn(name = "roomId")
     private Room room;
 

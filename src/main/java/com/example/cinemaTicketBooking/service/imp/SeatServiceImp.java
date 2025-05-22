@@ -113,8 +113,10 @@ public class SeatServiceImp implements SeatService {
 
     @Override
     public double getSeatPrice(SeatDTO seatDTO) {
-        return seatRepository.findSeatByMovieIdAndScheduleDateAndRowAndNumber(seatDTO.getMovieId(),seatDTO.getSchedule(),seatDTO.getRow(),seatDTO.getNumber()).getTicketOrder().getTicketPrice().getPrice();
+        return seatRepository.findSeatByMovieIdAndScheduleDateAndRowAndNumber(seatDTO.getMovieId(),seatDTO.getSchedule(),seatDTO.getRow(),seatDTO.getNumber()).getTicketPrice().getPrice();
     }
+
+
 
     public Set<String> getSeatsByUserIdAndMovieSchedule(int userId, int movieId, LocalDateTime schedule) {
         String scheduleStr = schedule.toString(); // ISO-8601, ex: 2025-05-10T19:00

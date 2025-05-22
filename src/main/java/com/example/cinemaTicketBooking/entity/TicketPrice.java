@@ -16,9 +16,7 @@ public class TicketPrice {
 
     private String seatType;
 
-
-
-    @OneToOne(mappedBy = "ticketPrice")
-    private TicketOrder ticketOrder;
+    @OneToMany (mappedBy = "ticketPrice")
+    private List<Seat> seats;
 
 }
