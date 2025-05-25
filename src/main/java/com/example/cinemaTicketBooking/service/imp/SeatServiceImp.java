@@ -194,7 +194,7 @@ public class SeatServiceImp implements SeatService {
 
     public void resetTime(Set<String> keys){
         for (String key : keys) {
-            redisTemplate.expire(key, Duration.ofSeconds(2*60));
+            redisTemplate.expire(key, Duration.ofSeconds(5*60));
         }
     }
 

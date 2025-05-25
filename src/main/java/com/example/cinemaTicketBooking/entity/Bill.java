@@ -15,6 +15,8 @@ public class Bill {
 
     private LocalDateTime createTime;
 
+    private LocalDateTime expiredAt;
+
     private long totalAmount;
 
     private String status;

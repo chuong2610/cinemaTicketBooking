@@ -1,9 +1,15 @@
 package com.example.cinemaTicketBooking.service.imp;
 
 import com.example.cinemaTicketBooking.dto.CheckoutDTO;
+import com.example.cinemaTicketBooking.entity.Bill;
+import com.example.cinemaTicketBooking.entity.TicketOrder;
 import com.example.cinemaTicketBooking.payload.request.CheckoutRequest;
 import com.example.cinemaTicketBooking.payload.request.MomoRequest;
 import com.example.cinemaTicketBooking.payload.response.CheckoutRessponse;
+import com.example.cinemaTicketBooking.payload.response.MomoResponse;
+import com.example.cinemaTicketBooking.repository.BillRepository;
+import com.example.cinemaTicketBooking.repository.SeatRepository;
+import com.example.cinemaTicketBooking.repository.TicketOrderRepository;
 import com.example.cinemaTicketBooking.service.MomoService;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +31,14 @@ public class MomoServiceImp implements MomoService {
     @Value("${momo.secretKey}")
     private String secretKey;
 
+    @Autowired
+    private BillRepository billRepository;
 
+    @Autowired
+    private TicketOrderRepository ticketOrderRepository;
 
-
+    @Autowired
+    private SeatRepository seatRepository;
     public MomoRequest getMomoRequest(CheckoutDTO checkoutDTO, int billId) {
         String orderId = String.valueOf(billId)+"-"+ System.currentTimeMillis();
         String requestId = UUID.randomUUID().toString();
@@ -69,6 +80,37 @@ public class MomoServiceImp implements MomoService {
         }
         return null;
 
+    }
+
+    public void processMomoIpn(MomoResponse response) {
+        if (response.getResultCode() == 0) {
+            // Tách billId từ orderId (dạng: billId-timestamp)
+            String orderId = response.getOrderId();
+            String[] parts = orderId.split("-");
+            int billId = Integer.parseInt(parts[0]);
+
+            // Lấy bill và cập nhật trạng thái
+            Bill bill = billRepository.findById(billId).orElse(null);
+            if (bill != null && "PENDING".equals(bill.getStatus())) {
+                bill.setStatus("PAID");
+                billRepository.save(bill);
+                seatRepository.markSeatsPaidByBillId(billId);
+
+            }
+        } else {
+            // Giao dịch thất bại → bạn có thể cập nhật trạng thái là FAILED
+            String orderId = response.getOrderId();
+            String[] parts = orderId.split("-");
+            int billId = Integer.parseInt(parts[0]);
+
+            Bill bill = billRepository.findById(billId).orElse(null);
+            if (bill != null && "PENDING".equals(bill.getStatus())) {
+                bill.setStatus("FAILED");
+                billRepository.save(bill);
+                ticketOrderRepository.deleteByBillId(billId);
+
+            }
+        }
     }
 
 

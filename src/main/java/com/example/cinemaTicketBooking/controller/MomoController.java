@@ -2,6 +2,7 @@ package com.example.cinemaTicketBooking.controller;
 
 import com.example.cinemaTicketBooking.dto.CheckoutDTO;
 import com.example.cinemaTicketBooking.payload.request.MomoRequest;
+import com.example.cinemaTicketBooking.payload.response.MomoResponse;
 import com.example.cinemaTicketBooking.service.BillService;
 import com.example.cinemaTicketBooking.service.MomoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,9 @@ public class MomoController {
         return ResponseEntity.ok(momoResponse.getBody());
     }
     @PostMapping("/notify")
-    public ResponseEntity<?> momoNotify(@RequestBody String body) {
-        System.out.println("Notify từ MoMo: " + body);
+    public ResponseEntity<?> momoNotify(@RequestBody MomoResponse momoResponse) throws Exception {
+        System.out.println("Notify từ MoMo: " + momoResponse);
+        momoService.processMomoIpn(momoResponse);
         return ResponseEntity.ok("OK");
     }
 }

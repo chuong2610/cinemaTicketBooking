@@ -36,6 +36,7 @@ public class BillServiceImp implements BillService {
         user.setId(checkoutDTO.getUserId());
         Bill bill = new Bill();
         bill.setCreateTime(LocalDateTime.now());
+        bill.setExpiredAt(LocalDateTime.now().plusMinutes(5));
         bill.setTotalAmount(checkoutDTO.getTotalPrice());
         bill.setCustomer(user);
         bill.setStatus("Pending");
