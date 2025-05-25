@@ -1,5 +1,6 @@
 package com.example.cinemaTicketBooking.entity;
 
+import com.example.cinemaTicketBooking.dto.SeatDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,6 +23,9 @@ public class Schedule {
     @ManyToOne
     @JoinColumn(name = "roomId")
     private Room room;
+
+    @OneToMany(mappedBy = "schedule")
+    private List<TicketOrder> seats;
 
 
 

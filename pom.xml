@@ -114,6 +114,11 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.14.2</version> <!-- Hoặc phiên bản mới nhất -->
 		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version> <!-- Hoặc bản mới nhất -->
+		</dependency>
 
 	</dependencies>
 

@@ -1,5 +1,6 @@
 package com.example.cinemaTicketBooking.entity;
 
+import com.example.cinemaTicketBooking.dto.ScheduleDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,7 +13,9 @@ public class TicketOrder {
     private int id;
 
 
-
+    @ManyToOne
+    @JoinColumn(name = "scheduleId")
+    private Schedule schedule;
 
     @ManyToOne
     @JoinColumn(name = "movieId")

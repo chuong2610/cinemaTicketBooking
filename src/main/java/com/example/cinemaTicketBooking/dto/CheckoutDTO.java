@@ -3,6 +3,7 @@ package com.example.cinemaTicketBooking.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -15,5 +16,13 @@ public class CheckoutDTO {
     private LocalDateTime schedule;
     private List<String> seats;
     private Map<String,Integer> products;
-    private double totalPrice;
+    private long totalPrice;
+
+    public String getOrderInfoForMomo() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String formattedSchedule = schedule.format(formatter);
+        String seatList = String.join(", ", seats);
+
+        return "Thanh toán vé: " + movieId + " | Rạp: " + location + " | Ghế: " + seatList + " | Suất: " + formattedSchedule;
+    }
 }

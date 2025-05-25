@@ -15,7 +15,7 @@ public class Bill {
 
     private LocalDateTime createTime;
 
-    private double totalAmount;
+    private long totalAmount;
 
     private String status;
 

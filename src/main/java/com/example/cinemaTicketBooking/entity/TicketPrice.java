@@ -12,7 +12,7 @@ public class TicketPrice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private double price;
+    private long price;
 
     private String seatType;
 

@@ -20,7 +20,7 @@ public class SeatDTO {
 
     private String action;
 
-    private double price;
+    private long price;
 
 
 

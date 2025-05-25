@@ -17,7 +17,7 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
     @GetMapping("/schedule")
-    public ResponseEntity<?>findByRoomLocationIdAndMovieId( @RequestParam int locationId,@RequestParam int movieId, @RequestParam LocalDate date) {
+    public ResponseEntity<?>findSchedulesByRoomLocationIdAndMovieId( @RequestParam int locationId,@RequestParam int movieId, @RequestParam LocalDate date) {
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setData(scheduleService.findByRoomLocationIdAndMovieIdAndDate(locationId, movieId,date));
         baseResponse.setMessage("Now showing");

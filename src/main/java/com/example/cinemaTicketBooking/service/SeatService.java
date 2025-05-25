@@ -12,7 +12,7 @@ public interface SeatService {
     List<SeatDTO> getCurrentSeatStatus(SeatDTO message);
 
     List<SeatDTO> getSelectedSeats(SeatDTO seatDTO);
-     double getSeatPrice(SeatDTO seatDTO);
+     long getSeatPrice(SeatDTO seatDTO);
     Set<String> getSeatsByUserIdAndMovieSchedule(int userId, int movieId, LocalDateTime schedule);
     void releaseSeats( List<SeatDTO> seats);
     List<SeatDTO> getSeatDTOFromKey(Set<String> keys);

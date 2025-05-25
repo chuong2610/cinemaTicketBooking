@@ -112,7 +112,7 @@ public class SeatServiceImp implements SeatService {
     }
 
     @Override
-    public double getSeatPrice(SeatDTO seatDTO) {
+    public long getSeatPrice(SeatDTO seatDTO) {
         return seatRepository.findSeatByMovieIdAndScheduleDateAndRowAndNumber(seatDTO.getMovieId(),seatDTO.getSchedule(),seatDTO.getRow(),seatDTO.getNumber()).getTicketPrice().getPrice();
     }
 

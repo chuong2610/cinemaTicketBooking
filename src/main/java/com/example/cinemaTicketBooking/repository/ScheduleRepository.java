@@ -19,4 +19,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
             @Param("movieId") Integer movieId,
             @Param("startOfDay") LocalDateTime startOfDay,
             @Param("startOfNextDay") LocalDateTime startOfNextDay);
+
+    Schedule findByMovieIdAndDate(int movieId, LocalDateTime date);
+
 }

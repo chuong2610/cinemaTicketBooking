@@ -4,6 +4,7 @@ import com.example.cinemaTicketBooking.dto.SeatDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 @Data
 public class CheckoutRessponse {
@@ -12,7 +13,6 @@ public class CheckoutRessponse {
     private String address;
     private LocalDateTime schedule;
     private List<String> seats;
-    private double totalPrice;
-
+    private long totalPrice;
 
 }

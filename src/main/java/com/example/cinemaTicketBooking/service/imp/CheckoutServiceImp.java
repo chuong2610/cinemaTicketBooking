@@ -24,7 +24,7 @@ public class CheckoutServiceImp implements CheckoutService {
 
     @Override
     public CheckoutRessponse checkoutInformation(CheckoutRequest request) {
-        double totalPrice = 0;
+        long totalPrice = 0;
         List<String> seats = new ArrayList<>();
         CheckoutRessponse checkoutRessponse = new CheckoutRessponse();
         checkoutRessponse.setMovie(movieRepository.findById(request.getMovieId()).get().getTitle());
